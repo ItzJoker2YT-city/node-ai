@@ -107,7 +107,7 @@ Linux:
 .venv/bin/python backend/worker.py train --steps 100000 --seconds 240 --resume
 ```
 
-This continues the saved model weights for approximately four minutes, then runs qualitative reply checks. The distributed checkpoint omits optimizer state, so the first continuation starts a fresh optimizer; later checkpoints save it. The `--steps` value is an upper bound, not a prediction of work completed. Training may end at either limit. Afterward restart the server.
+This continues the saved model weights for approximately four minutes, then runs qualitative reply checks. For the 4-hour CPU Colab path with automatic checkpoint selection and baseline regression guards, use the notebook linked in README.md. The distributed checkpoint omits optimizer state, so the first continuation starts a fresh optimizer; later checkpoints save it. The `--steps` value is an upper bound, not a prediction of work completed. Training may end at either limit. Afterward restart the server.
 
 **Warning:** the UI's **Train from scratch** button does not resume. It initializes random weights and can replace your trained checkpoint after confirmation.
 
