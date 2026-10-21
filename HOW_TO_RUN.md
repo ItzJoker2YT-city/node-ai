@@ -18,7 +18,7 @@ git clone https://github.com/ItzJoker2YT-city/node-ai.git
 cd node-ai
 ```
 
-Alternatively use GitHub's **Code → Download ZIP**, extract it, and open a terminal in the extracted folder. Commands below must run in the folder containing `backend`, `data`, and `requirements.txt`.
+Alternatively use GitHub's **Code → Download ZIP** (or download the supplied Node-Desktop ZIP), extract the project folder onto your **Desktop**, and open a terminal in that extracted folder. Commands below must run in the folder containing `backend`, `data`, and `requirements.txt`.
 
 ## 2A. Windows — PowerShell
 
@@ -63,6 +63,8 @@ Try short prompts such as:
 - `can you help me?`
 
 Answers are sampled and can vary. Successful greeting examples overlap with the training data and do not demonstrate general intelligence. Basic facts or programming answers may still be wrong.
+
+The app sends recent conversation turns, but the model only sees the last **256 UTF-8 bytes**. Short follow-ups may work; longer context and unseen names are unreliable.
 
 On future runs, dependencies are already installed:
 

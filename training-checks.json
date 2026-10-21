@@ -1,40 +1,30 @@
 {
   "training": {
     "state": "complete",
-    "step": 860,
+    "step": 2189,
     "steps": 100000,
-    "val_loss": 2.0504719813664756,
-    "loss": 0.20308610796928406,
+    "val_loss": 2.0072006384531655,
+    "loss": 0.18159621953964233,
     "parameters": 4870144,
-    "elapsed_seconds": 240.1,
-    "duration_limit_seconds": 240,
-    "started_at": "2026-10-21T08:44:34Z",
+    "elapsed_seconds": 600.3,
+    "duration_limit_seconds": 600,
+    "started_at": "2026-10-21T09:09:00Z",
     "context_bytes": 256,
     "objective": "English conversation",
     "resumed_from_checkpoint": true,
     "optimizer_restored": true,
-    "learning_rate": 3.000170180070358e-05,
+    "learning_rate": 3.0000001554220275e-05,
     "completed_reason": "duration_limit",
     "checkpoint": true,
-    "dataset_bytes": 38634,
+    "dataset_bytes": 189256,
     "torch_available": true
   },
-  "before": [
-    {
-      "prompt": "hi",
-      "output": " Hello! What would you like to hike the more product instocont c"
-    },
-    {
-      "prompt": "what is your name?",
-      "output": " Here the programmer brang a helldedgram bring? What is language"
-    }
-  ],
-  "after": {
+  "qualitative_checks": {
     "note": "Raw qualitative checks; not a fluency score. Some prompts match training greetings.",
     "checks": [
       {
         "prompt": "hi",
-        "output": " Hey! How can I help?\n"
+        "output": " Hi! How can I help?"
       },
       {
         "prompt": "hello",
@@ -42,7 +32,7 @@
       },
       {
         "prompt": "what is your name?",
-        "output": " I am Node. I am a small experimental AI model called Node.\n"
+        "output": " My name is Node.\n"
       },
       {
         "prompt": "how are you?",
@@ -54,8 +44,30 @@
       },
       {
         "prompt": "what is a variable?",
-        "output": " A list is a name that refers to a program?\n"
+        "output": " A variable is a name that refers to a value."
       }
     ]
-  }
+  },
+  "followup_checks": [
+    {
+      "case": "practiced_name_followup",
+      "prompt": "User: my name is Sam\nNode: Nice to meet you, Sam.\nUser: what is my name?\nNode:",
+      "actual_output": " You said your name is Sam.\n"
+    },
+    {
+      "case": "unseen_name_followup",
+      "prompt": "User: my name is Maya\nNode: Nice to meet you, Maya.\nUser: what is my name?\nNode:",
+      "actual_output": " You said your name is Sam.\n"
+    },
+    {
+      "case": "practiced_variable_followup",
+      "prompt": "User: what is a variable?\nNode: A variable is a name that refers to a value.\nUser: give me an example\nNode:",
+      "actual_output": " In Python, x = 5 gis a sequence of x vasys text.\n"
+    },
+    {
+      "case": "new_greeting",
+      "prompt": "User: Hi there! Can we have a conversation?\nNode:",
+      "actual_output": " The capital of France is Paris.\n"
+    }
+  ]
 }

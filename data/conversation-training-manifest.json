@@ -1,0 +1,9 @@
+{
+  "purpose": "600-second continuation on conversation structure and short follow-ups",
+  "authored_multiturn_dialogues": 30,
+  "training_records_including_repetitions": 1527,
+  "bytes": 189256,
+  "context_limit_bytes": 256,
+  "validation": "Existing separate English OpenAssistant held-out file. Practiced dialogue checks are qualitative and can overlap training data.",
+  "source": "Authored short dialogues, prior focused corpus, and filtered Apache-2.0 OASST1 examples."
+}

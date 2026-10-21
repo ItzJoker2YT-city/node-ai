@@ -1,6 +1,6 @@
 # Node AI — experimental CPU conversation model
 
-This repository includes your Node model's trained weights, React interface, and local CPU backend. No pretrained model was substituted. A focused 240-second continuation produced coherent replies to several practiced greetings. It is NOT a generally fluent assistant: a basic variable-definition check was incorrect.
+This repository includes your Node model's trained weights, React interface, and local CPU backend. No pretrained model was substituted. The included checkpoint has completed an additional 600-second conversation-training run (2,189 steps), continuing the earlier focused greeting model. It is NOT a generally fluent assistant: practiced greetings can work while new phrasings and unseen names can fail.
 
 ## Quick start
 
@@ -37,7 +37,7 @@ A prebuilt React interface is included. Node.js is needed only to edit/rebuild i
 
 - Roughly 4.9 million parameters; 6 blocks; width 256; 4 heads; 256-byte context.
 - A trained `data/node.pt` checkpoint containing model/config only. Optimizer state is omitted from this portable copy; future continuation can restore the learned weights, not the exact optimizer trajectory.
-- 38 KB focused conversational training corpus and a separate held-out English validation file.
+- A roughly 189 KB conversation-training corpus and a separate held-out English validation file. The corpus blends authored short dialogues, greeting practice, and filtered general conversation.
 - Backend support for continuing from a trusted checkpoint (`--resume`) and timed training (`--seconds`). The interface's **Train from scratch** button still initializes random weights and replaces the checkpoint after confirmation. Do not click it merely to chat.
 - Training/evaluation receipts in `training-checks.json`. Greeting checks overlap with the training examples and do not establish generalization or reliability.
 
@@ -52,7 +52,7 @@ The dataset license and manifests are in `data/`. The focused dataset is modifie
 
 ## Validation limits
 
-Python syntax, CPU training, checkpoint load, timed stop, continuation from saved weights, and actual generation were tested in Linux. The final focused run lasted 240.1 seconds and completed 860 steps. Windows setup instructions were not executed on Windows. No production security, model safety, multilingual capability, or coding-quality guarantee is made.
+Python syntax, CPU training, checkpoint load, timed stop, continuation from saved weights, and actual generation were tested in Linux. The latest continuation lasted 600.3 seconds and completed 2,189 steps. Windows setup instructions were not executed on Windows. No production security, model safety, multilingual capability, or coding-quality guarantee is made.
 
 Only load your own trusted checkpoint files. Review generated code; this application does not execute generated code or provide coding-agent tools.
 
@@ -60,3 +60,19 @@ Only load your own trusted checkpoint files. Review generated code; this applica
 ## Hosting
 
 Publishing this repository does not deploy the AI. The Python process must run on your computer or a persistent compute host. Temporary sandbox links do not provide guaranteed uptime.
+
+
+## Latest conversation update
+
+The interface now sends recent user/model turns instead of only the latest message. Workspace notices are excluded, and the request is bounded. The model still sees only the last **256 UTF-8 bytes**, so most longer conversation history is unavailable. This is not long-term memory.
+
+Actual qualitative checks are saved in `training-checks.json`. Greetings and a practiced name-recall example worked. An unseen name (Maya) was incorrectly recalled as Sam, and a novel greeting received an unrelated answer. These failures show memorization and poor generalization; the model is not a dependable conversational assistant.
+
+## Put the project on your Desktop
+
+Download the repository ZIP (or the supplied Node-Desktop ZIP), then extract the project folder onto your computer's Desktop. Open a terminal inside that folder and follow [HOW_TO_RUN.md](HOW_TO_RUN.md). A remote assistant cannot directly copy files into your local Desktop.
+
+
+## Conversation-input tests
+
+With Node.js installed, run `npm test` to check that recent turns are retained, workspace notices are excluded, and requests are capped. These are interface tests, not model-quality benchmarks.

@@ -1,0 +1,61 @@
+{
+  "training": {
+    "state": "complete",
+    "step": 860,
+    "steps": 100000,
+    "val_loss": 2.0504719813664756,
+    "loss": 0.20308610796928406,
+    "parameters": 4870144,
+    "elapsed_seconds": 240.1,
+    "duration_limit_seconds": 240,
+    "started_at": "2026-10-21T08:44:34Z",
+    "context_bytes": 256,
+    "objective": "English conversation",
+    "resumed_from_checkpoint": true,
+    "optimizer_restored": true,
+    "learning_rate": 3.000170180070358e-05,
+    "completed_reason": "duration_limit",
+    "checkpoint": true,
+    "dataset_bytes": 38634,
+    "torch_available": true
+  },
+  "before": [
+    {
+      "prompt": "hi",
+      "output": " Hello! What would you like to hike the more product instocont c"
+    },
+    {
+      "prompt": "what is your name?",
+      "output": " Here the programmer brang a helldedgram bring? What is language"
+    }
+  ],
+  "after": {
+    "note": "Raw qualitative checks; not a fluency score. Some prompts match training greetings.",
+    "checks": [
+      {
+        "prompt": "hi",
+        "output": " Hey! How can I help?\n"
+      },
+      {
+        "prompt": "hello",
+        "output": " Hello! What would you like help with?\n"
+      },
+      {
+        "prompt": "what is your name?",
+        "output": " I am Node. I am a small experimental AI model called Node.\n"
+      },
+      {
+        "prompt": "how are you?",
+        "output": " I am ready to help. How are you?\n"
+      },
+      {
+        "prompt": "can you help me?",
+        "output": " I can try. Tell me what you need help with.\n"
+      },
+      {
+        "prompt": "what is a variable?",
+        "output": " A list is a name that refers to a program?\n"
+      }
+    ]
+  }
+}
