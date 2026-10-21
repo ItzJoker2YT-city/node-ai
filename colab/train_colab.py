@@ -1,4 +1,4 @@
-"""Timed Colab conversation continuation; CUDA by default, CPU for explicit tests.
+"""Timed Colab conversation continuation; CPU by default; CUDA only when explicitly requested.
 
 No pretrained model is downloaded. Continue the repository's own Node checkpoint.
 Select the best validation checkpoint instead of assuming longer training is better.
@@ -36,7 +36,7 @@ def save_weights(path, model):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--seconds', type=int, default=1800)
-    parser.add_argument('--device', choices=['cuda', 'cpu'], default='cuda')
+    parser.add_argument('--device', choices=['cuda', 'cpu'], default='cpu')
     parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--output', type=Path, default=ROOT / 'colab_outputs')
     args = parser.parse_args()
@@ -46,7 +46,7 @@ def main():
         raise RuntimeError('No Colab GPU assigned. Select Runtime > Change runtime type > GPU, then reconnect. No CPU fallback was started.')
     device = torch.device(args.device)
     if device.type == 'cpu':
-        torch.set_num_threads(3)
+        torch.set_num_threads(min(3, os.cpu_count() or 1))
     torch.manual_seed(42)
     args.output.mkdir(parents=True, exist_ok=True)
     checkpoint = torch.load(ROOT / 'data' / 'node.pt', map_location='cpu', weights_only=True)
@@ -118,7 +118,7 @@ def main():
     last_evaluation = last_save = last_log = 0.0
     validation_loss = baseline
     loss_value = None
-    hardware = torch.cuda.get_device_name(0) if device.type == 'cuda' else 'CPU (explicit test mode)'
+    hardware = torch.cuda.get_device_name(0) if device.type == 'cuda' else 'CPU'
 
     def report(state):
         value = {'state': state, 'started_at': wall_start, 'elapsed_seconds': round(time.monotonic()-started, 1),

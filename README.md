@@ -78,8 +78,8 @@ Download the repository ZIP (or the supplied Node-Desktop ZIP), then extract the
 With Node.js installed, run `npm test` to check that recent turns are retained, workspace notices are excluded, and requests are capped. These are interface tests, not model-quality benchmarks.
 
 
-## Google Colab GPU experiment
+## Google Colab CPU experiment
 
-[Open the 30-minute conversation notebook in Colab](https://colab.research.google.com/github/ItzJoker2YT-city/node-ai/blob/main/colab/Node_30_minute_conversation.ipynb). Select a GPU runtime, then run the cells in order. The script requires CUDA and does not silently fall back to CPU. Keep Colab's CUDA-enabled PyTorch; do not install this repository's CPU-only requirements there.
+[Open the 30-minute CPU conversation notebook in Colab](https://colab.research.google.com/github/ItzJoker2YT-city/node-ai/blob/main/colab/Node_30_minute_conversation.ipynb). Select a CPU runtime (no hardware accelerator), then run the cells in order. The notebook explicitly uses `--device cpu --batch-size 2` and continues the included checkpoint for 1,800 seconds. No GPU or paid upgrade is requested.
 
-The experiment continues the included checkpoint for 1,800 seconds, records actual assigned hardware, saves periodic weights, and compares before/after replies. Both final and best-validation checkpoints are retained. More training can overfit; GPU access and fluent replies are not guaranteed. Download the results, then disconnect/delete the runtime. This workflow does not mount Google Drive or purchase compute.
+The script records the execution device, saves periodic weights, and compares before/after replies. Both final and best-validation checkpoints are retained. More training can overfit; fluent replies are not guaranteed. Download results, then disconnect/delete the runtime. This workflow does not mount Google Drive or purchase compute. CUDA remains an optional script flag for separately authorized future experiments, but the notebook does not use it.
