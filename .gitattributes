@@ -1,0 +1,5 @@
+*.pt binary
+*.py text eol=lf
+*.jsx text eol=lf
+*.css text eol=lf
+*.md text eol=lf

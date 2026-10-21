@@ -1,0 +1,12 @@
+{
+  "source": "https://huggingface.co/datasets/OpenAssistant/oasst1",
+  "license": "Apache-2.0",
+  "language": "English",
+  "source_pairs": 3098,
+  "training_records_including_seed_repetitions": 5716,
+  "held_out_records": 323,
+  "authored_seed_pairs": 40,
+  "seed_variant_repetitions": 17,
+  "validation_split": "SHA-256 conversation-tree ID split; authored greetings are training-only",
+  "filters": "English, reviewed, quality >=0.5, short pairs; exclude labeled spam/PII/sexual/hate/violence/inappropriate, email-like text and competing model identity claims. Automated filters are not a full safety audit."
+}

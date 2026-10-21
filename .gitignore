@@ -1,0 +1,11 @@
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+data/*.log
+data/*.tmp
+data/stop.flag
+.DS_Store

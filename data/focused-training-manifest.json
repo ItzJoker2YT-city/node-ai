@@ -1,0 +1,9 @@
+{
+  "purpose": "240-second focused continuation on short conversation",
+  "authored_base_pairs": 70,
+  "authored_variants": 386,
+  "general_dialogue_records": 33,
+  "bytes": 38634,
+  "validation": "Existing held-out OpenAssistant English validation remains separate. Greeting checks can match training examples and are not generalization evidence.",
+  "checkpoint": "Continue the existing random-initialized Node model; no pretrained model is substituted."
+}
