@@ -76,3 +76,10 @@ Download the repository ZIP (or the supplied Node-Desktop ZIP), then extract the
 ## Conversation-input tests
 
 With Node.js installed, run `npm test` to check that recent turns are retained, workspace notices are excluded, and requests are capped. These are interface tests, not model-quality benchmarks.
+
+
+## Google Colab GPU experiment
+
+[Open the 30-minute conversation notebook in Colab](https://colab.research.google.com/github/ItzJoker2YT-city/node-ai/blob/main/colab/Node_30_minute_conversation.ipynb). Select a GPU runtime, then run the cells in order. The script requires CUDA and does not silently fall back to CPU. Keep Colab's CUDA-enabled PyTorch; do not install this repository's CPU-only requirements there.
+
+The experiment continues the included checkpoint for 1,800 seconds, records actual assigned hardware, saves periodic weights, and compares before/after replies. Both final and best-validation checkpoints are retained. More training can overfit; GPU access and fluent replies are not guaranteed. Download the results, then disconnect/delete the runtime. This workflow does not mount Google Drive or purchase compute.
