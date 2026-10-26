@@ -7,6 +7,7 @@ import argparse
 import json
 import math
 import os
+import signal
 from pathlib import Path
 import sys
 import time
@@ -101,6 +102,7 @@ def main():
     parser.add_argument('--seconds', type=int, default=14400)
     parser.add_argument('--device', choices=['cuda', 'cpu'], default='cpu')
     parser.add_argument('--batch-size', type=int, default=16)
+    parser.add_argument('--stop-file', type=Path, default=None)
     parser.add_argument('--output', type=Path, default=ROOT / 'colab_outputs')
     args = parser.parse_args()
     if not 1 <= args.seconds <= 14400 or not 1 <= args.batch_size <= 128:
@@ -220,6 +222,7 @@ def main():
     best_quality = before_quality
     save_weights(args.output / 'best.pt', model)
     save_weights(args.output / 'before.pt', model)
+    atomic_json(args.output / 'baseline_quality.json', {'validation_loss': baseline, 'quality': before_quality})
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=0.01)
     started = time.monotonic()
     wall_start = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
@@ -256,8 +259,19 @@ def main():
         print(json.dumps(value), flush=True)
         return value
 
+    stop_requested = False
+
+    def request_stop(signum, frame):
+        nonlocal stop_requested
+        stop_requested = True
+
+    signal.signal(signal.SIGTERM, request_stop)
+    signal.signal(signal.SIGINT, request_stop)
     report('training')
     while time.monotonic() - started < args.seconds:
+        if stop_requested or (args.stop_file and args.stop_file.exists()):
+            stop_requested = True
+            break
         elapsed = time.monotonic() - started
         progress = min(1.0, elapsed / args.seconds)
         learning_rate = (1e-5 + (1e-4-1e-5) * 0.5 * (1+math.cos(math.pi*progress))) * min(1.0, (step+1)/50)
@@ -304,7 +318,7 @@ def main():
         best = validation_loss
         best_quality = quality_report
         save_weights(args.output / 'best.pt', model)
-    run = report('training_complete')
+    run = report('stopped' if stop_requested else 'training_complete')
     final_quality = quality_report
     best_checkpoint = torch.load(args.output / 'best.pt', map_location='cpu', weights_only=True)
     model.load_state_dict(best_checkpoint['model'])
@@ -318,7 +332,7 @@ def main():
         'note': 'Rule-based checks are weak proxies, not proof of normal conversation or a guarantee against degradation. Some prompts overlap training. Inspect outputs on fresh conversations before deploying. Context is limited to 256 bytes.'
     })
     # Stop only the job; no runtime deletion, Drive mounting, account changes or purchasing.
-    report('complete')
+    report('stopped' if stop_requested else 'complete')
 
 
 if __name__ == '__main__':

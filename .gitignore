@@ -9,3 +9,6 @@ data/*.log
 data/*.tmp
 data/stop.flag
 .DS_Store
+
+dashboard_state/
+colab_outputs/

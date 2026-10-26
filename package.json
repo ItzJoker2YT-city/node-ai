@@ -5,7 +5,9 @@
   "scripts": {
     "build": "node build.cjs",
     "start": "python backend/server.py",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "build:dashboard": "node build-dashboard.cjs",
+    "dashboard": "python backend/dashboard.py"
   },
   "dependencies": {
     "react": "^19.0.0",

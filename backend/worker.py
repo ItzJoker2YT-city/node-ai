@@ -118,7 +118,7 @@ def generate():
     torch.set_num_threads(3)
     request = json.loads(sys.stdin.read())
     # Checkpoints must be created by this application; never load untrusted .pt files.
-    ckpt = torch.load(CHECKPOINT, map_location='cpu', weights_only=True)
+    ckpt = torch.load(Path(os.environ.get('NODE_MODEL_PATH', CHECKPOINT)), map_location='cpu', weights_only=True)
     model = NodeTiny(ckpt['config'])
     model.load_state_dict(ckpt['model'])
     model.eval()
@@ -127,7 +127,8 @@ def generate():
     output = []
     with torch.inference_mode():
         for _ in range(min(256, max(1, int(request.get('max_tokens',120))))):
-            logits = model(ids[:, -model.config['context']:])[:, -1] / 0.8
+            temperature = max(0.2, min(1.5, float(request.get('temperature', 0.8))))
+            logits = model(ids[:, -model.config['context']:])[:, -1] / temperature
             values, indices = torch.topk(logits, 40)
             selected = torch.multinomial(F.softmax(values, dim=-1), 1)
             token = indices.gather(-1, selected)
