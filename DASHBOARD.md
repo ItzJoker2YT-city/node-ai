@@ -18,7 +18,7 @@ The process binds to **http://127.0.0.1:8000**, not HTTPS. Terminate TLS at a tr
 NODE_PUBLIC_ORIGIN=https://ai.runhost.bond PORT=8000 python backend/dashboard.py
 ```
 
-The proxy must preserve the public Host header. Do not expose the original unauthenticated `backend/server.py` on the public domain. The public domain is explicitly allowed by `NODE_PUBLIC_ORIGIN`; other hosts and origins are rejected.
+The proxy must preserve the public Host header. If the tunnel service is accidentally set to `https://localhost:8000`, change its origin service to **HTTP** on `localhost:8000`; the public hostname remains HTTPS. Do not expose the original unauthenticated `backend/server.py` on the public domain. The public domain is explicitly allowed by `NODE_PUBLIC_ORIGIN`; other hosts and origins are rejected.
 
 If CPU dependencies are installed under a separate target directory, include it in `PYTHONPATH` when launching the server. Torch is only imported by training/inference subprocesses, not the HTTP process.
 

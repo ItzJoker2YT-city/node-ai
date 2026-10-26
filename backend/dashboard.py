@@ -177,7 +177,7 @@ class Handler(BaseHTTPRequestHandler):
     protocol_version = 'HTTP/1.1'
     def log_message(self, fmt, *args):
         # Do not log request bodies, cookie values, or query strings.
-        print(f'{self.command} {urlparse(self.path).path}', flush=True)
+        print(f'{getattr(self, "command", "INVALID")} {urlparse(getattr(self, "path", "")).path}', flush=True)
 
     def origins(self):
         return {f'http://localhost:{PORT}', f'http://127.0.0.1:{PORT}'} | ({PUBLIC_ORIGIN} if PUBLIC_ORIGIN else set())
