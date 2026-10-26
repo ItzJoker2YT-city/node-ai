@@ -102,11 +102,14 @@ def active_jobs():
             args = (proc / 'cmdline').read_bytes().decode().split('\0')
             if len(args) < 2 or not any('python' in Path(a).name for a in args[:1]):
                 continue
-            script = Path(args[1]).resolve()
+            cwd = (proc / 'cwd').resolve()
+            script = Path(args[1])
+            script = (script if script.is_absolute() else cwd / script).resolve()
             if script not in {TRAINER.resolve(), EXTERNAL_SCRIPT}:
                 continue
             if '--output' in args:
-                output = Path(args[args.index('--output') + 1]).resolve()
+                output = Path(args[args.index('--output') + 1])
+                output = (output if output.is_absolute() else cwd / output).resolve()
             else:
                 output = script.parents[1] / 'colab_outputs'
             if EXTERNAL and output == EXTERNAL.resolve():

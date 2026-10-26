@@ -113,4 +113,25 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(self.request('POST','/api/select',{'run':run,'file':'best.pt'},self.cookie,self.csrf)[0],200)
         self.assertEqual(self.request('GET','/api/download?run='+run+'&file=best.pt',cookie=self.cookie)[0],200)
 
+class ProcessDiscoveryTests(unittest.TestCase):
+    def test_relative_terminal_training_path_is_detected(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('dashboard_process_test', ROOT/'backend/dashboard.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'colab').mkdir()
+            script = root/'colab/train_colab.py'
+            script.write_text('import time; time.sleep(30)')
+            module.EXTERNAL_SCRIPT = script.resolve()
+            module.EXTERNAL = root/'colab_outputs'
+            process = subprocess.Popen([sys.executable,'colab/train_colab.py'],cwd=root)
+            try:
+                time.sleep(.1)
+                jobs = module.active_jobs()
+                self.assertTrue(any(job['id']=='current' and job['pid']==process.pid for job in jobs))
+            finally:
+                process.terminate();process.wait(timeout=5)
+
 if __name__=='__main__':unittest.main()
